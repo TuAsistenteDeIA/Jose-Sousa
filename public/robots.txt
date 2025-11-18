@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Allow: /blog
+Allow: /blog/article
+Allow: /oposiciones
+Allow: /contacto
+
+Sitemap: https://example.com/sitemap.xml

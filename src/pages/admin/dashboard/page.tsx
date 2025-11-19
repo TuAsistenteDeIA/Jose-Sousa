@@ -1,78 +1,154 @@
 import { useEffect, useState } from "react";
 import { db } from "../../../firebaseConfig";
-import { auth, logout } from "../../../firebaseAuth";
-import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
-export default function AdminDashboard() {
-
+export default function Dashboard() {
   const [posts, setPosts] = useState<any[]>([]);
-  const [allowed, setAllowed] = useState(false);
+  const navigate = useNavigate();
 
-  // PROTEGER LA RUTA: solo admin puede entrar
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setAllowed(true);
-        loadPosts();
-      } else {
-        window.location.href = "/admin/login";
-      }
-    });
+    const loadPosts = async () => {
+      const snap = await getDocs(collection(db, "posts"));
+      const data = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setPosts(data);
+    };
+    loadPosts();
   }, []);
 
-  const loadPosts = async () => {
-    const snap = await getDocs(collection(db, "posts"));
-    const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    setPosts(data);
-  };
-
   const handleDelete = async (id: string) => {
-    const confirmDelete = confirm("¿Seguro que quieres borrar este post?");
-    if (!confirmDelete) return;
-
+    if (!confirm("¿Seguro que quieres eliminar este post?")) return;
     await deleteDoc(doc(db, "posts", id));
-    alert("Post borrado");
-    loadPosts(); // refrescar lista
+    setPosts(posts.filter((p) => p.id !== id));
   };
-
-  if (!allowed) return <h1>Cargando...</h1>;
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Panel de Administración</h1>
+    <div
+      style={{
+        background: "#121212",
+        color: "#fff",
+        minHeight: "100vh",
+        padding: "40px",
+        fontFamily: "Arial, sans-serif",
+      }}
+    >
+      <h1 style={{ marginBottom: "10px", fontSize: "28px" }}>
+        Panel de Administración
+      </h1>
 
-      <button onClick={logout}>Cerrar sesión</button>
+      <button
+        onClick={() => navigate("/blog/add")}
+        style={{
+          background: "#1f6feb",
+          color: "white",
+          padding: "10px 20px",
+          borderRadius: "8px",
+          border: "none",
+          cursor: "pointer",
+          fontSize: "16px",
+          margin: "15px 0",
+        }}
+      >
+        ➕ Añadir nuevo post
+      </button>
 
-      <h2>Entradas del blog</h2>
+      <button
+        onClick={() => {
+          localStorage.removeItem("authUser");
+          navigate("/admin/login");
+        }}
+        style={{
+          marginLeft: "20px",
+          background: "transparent",
+          color: "#ff6b6b",
+          border: "1px solid #ff6b6b",
+          padding: "10px 15px",
+          borderRadius: "8px",
+          cursor: "pointer",
+        }}
+      >
+        🔒 Cerrar sesión
+      </button>
 
-      <table border={1} cellPadding={10}>
-        <thead>
-          <tr>
-            <th>Título</th>
-            <th>Fecha</th>
-            <th>Editar</th>
-            <th>Borrar</th>
-          </tr>
-        </thead>
-        <tbody>
-          {posts.map((post) => (
-            <tr key={post.id}>
-              <td>{post.title}</td>
-              <td>{post.date}</td>
-              <td>
-                <a href={`/admin/edit/${post.id}`}>Editar</a>
-              </td>
-              <td>
-                <button onClick={() => handleDelete(post.id)}>
-                  Borrar
-                </button>
-              </td>
+      <h2 style={{ marginTop: "30px" }}>Entradas del blog</h2>
+
+      <div style={{ overflowX: "auto", marginTop: "20px" }}>
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+            background: "#1e1e1e",
+            borderRadius: "10px",
+            overflow: "hidden",
+          }}
+        >
+          <thead>
+            <tr style={{ background: "#2c2c2c" }}>
+              <th style={thStyle}>Título</th>
+              <th style={thStyle}>Fecha</th>
+              <th style={thStyle}>Editar</th>
+              <th style={thStyle}>Borrar</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
 
+          <tbody>
+            {posts.map((post) => (
+              <tr key={post.id} style={{ borderBottom: "1px solid #333" }}>
+                <td style={tdStyle}>{post.title}</td>
+                <td style={tdStyle}>{post.date}</td>
+
+                <td style={tdStyle}>
+                  <button
+                    onClick={() => navigate(`/admin/edit/${post.id}`)}
+                    style={editBtn}
+                  >
+                    ✏️ Editar
+                  </button>
+                </td>
+
+                <td style={tdStyle}>
+                  <button
+                    onClick={() => handleDelete(post.id)}
+                    style={deleteBtn}
+                  >
+                    🗑️ Borrar
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
+
+const thStyle = {
+  padding: "12px",
+  textAlign: "left" as const,
+  fontWeight: "bold",
+  color: "#d1d1d1",
+};
+
+const tdStyle = {
+  padding: "12px",
+  color: "#e8e8e8",
+};
+
+const editBtn = {
+  background: "#1f6feb",
+  color: "white",
+  padding: "6px 14px",
+  border: "none",
+  borderRadius: "6px",
+  cursor: "pointer",
+};
+
+const deleteBtn = {
+  background: "#ff4d4d",
+  color: "white",
+  padding: "6px 14px",
+  border: "none",
+  borderRadius: "6px",
+  cursor: "pointer",
+};

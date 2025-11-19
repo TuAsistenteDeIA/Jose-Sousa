@@ -6,12 +6,19 @@ const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+
+  // 👇 ESTE ES EL BUCKET CORRECTO (US-CENTRAL1)
+  storageBucket: "blog-jose-sousa.appspot.com",
+
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER,
   appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-export const app = initializeApp(firebaseConfig);
+// Inicializar Firebase
+const app = initializeApp(firebaseConfig);
 
+// Exportar Firestore
 export const db = getFirestore(app);
+
+// Exportar Storage
 export const storage = getStorage(app);

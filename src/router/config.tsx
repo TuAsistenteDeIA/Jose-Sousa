@@ -19,11 +19,17 @@ import LoginPage from "../pages/admin/login/page";
 import AdminDashboard from "../pages/admin/dashboard/page";
 import EditPostPage from "../pages/admin/edit/[id]";
 import ArticlePage from "../pages/blog/article/[id]";
+import AddBlogPage from "../pages/blog/add/page";
 
 const routes: RouteObject[] = [
   {
   path: "/blog/article/:id",
   element: <ArticlePage />
+  }
+  ,
+  {
+  path: "/blog/add",
+  element: <AddBlogPage />
   }
   ,
   {

@@ -6,7 +6,6 @@ import AuxilioJudicialPage from '../pages/oposiciones/auxilio-judicial/page';
 import TramitacionProcesalPage from '../pages/oposiciones/tramitacion-procesal/page';
 import GestionProcesalPage from '../pages/oposiciones/gestion-procesal/page';
 import NotFound from '../pages/NotFound';
-import ArticlePage from '../pages/blog/article/page';
 import TemarioGestionProcesalPage from '../pages/oposiciones/gestion-procesal/temario/page';
 import GestionProcesal2024Page from '../pages/blog/gestion-procesal-2024/page';
 import DigitalizacionJusticia2024Page from '../pages/blog/digitalizacion-justicia-2024/page';
@@ -16,8 +15,32 @@ import NuevasTecnologiasTramitacion2024Page from '../pages/blog/nuevas-tecnologi
 import TemarioAuxilioJudicialPage from '../pages/oposiciones/auxilio-judicial/temario/page';
 import AuxilioJudicial2024Page from '../pages/blog/auxilio-judicial-2024/page';
 import PreparacionAuxilioJudicial2024Page from '../pages/blog/preparacion-auxilio-judicial-2024/page';
+import LoginPage from "../pages/admin/login/page";
+import AdminDashboard from "../pages/admin/dashboard/page";
+import EditPostPage from "../pages/admin/edit/[id]";
+import ArticlePage from "../pages/blog/article/[id]";
 
 const routes: RouteObject[] = [
+  {
+  path: "/blog/article/:id",
+  element: <ArticlePage />
+  }
+  ,
+  {
+  path: "/admin/edit/:id",
+  element: <EditPostPage />
+  }
+  ,
+  {
+  path: "/admin/dashboard",
+  element: <AdminDashboard />
+  }
+  ,
+  {
+  path: "/admin/login",
+  element: <LoginPage />
+  }
+  ,
   {
     path: '/',
     element: <HomePage />,
@@ -57,10 +80,6 @@ const routes: RouteObject[] = [
   {
     path: '*',
     element: <NotFound />,
-  },
-  {
-    path: '/blog/article/:id',
-    element: <ArticlePage />
   },
   {
     path: '/blog/gestion-procesal-2024',

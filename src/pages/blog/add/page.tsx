@@ -19,13 +19,18 @@ export default function AddBlogPage() {
     let imageUrl = "";
 
     try {
-      // Si hay imagen → subir a storage
+      // 👉 Subir imagen al bucket correcto
       if (image) {
-        const imageRef = ref(storage, `blogImages/${image.name}`);
+        const imageRef = ref(
+          storage,
+          `blogImages/${Date.now()}-${image.name}`
+        );
+
         await uploadBytes(imageRef, image);
         imageUrl = await getDownloadURL(imageRef);
       }
 
+      // 👉 Guardar en Firestore
       await addDoc(collection(db, "posts"), {
         title,
         content,

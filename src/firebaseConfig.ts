@@ -1,19 +1,16 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
-// Configuración de tu proyecto Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyAuBzwXPD0KwrCwYnlTgLn14cCz8UywKGo",
-  authDomain: "blog-jose-sousa.firebaseapp.com",
-  projectId: "blog-jose-sousa",
-  storageBucket: "blog-jose-sousa.firebasestorage.app",
-  messagingSenderId: "965810350328",
-  appId: "1:965810350328:web:d2a26b8dcc4f3713e0330d",
-  measurementId: "G-PEMQ7NSGEW"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY!,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN!,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID!,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET!,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID!,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID!
 };
 
-// Inicializar Firebase
 export const app = initializeApp(firebaseConfig);
-
-// Inicializar Firestore (BASE DE DATOS)
 export const db = getFirestore(app);
+export const storage = getStorage(app);

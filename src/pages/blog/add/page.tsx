@@ -21,15 +21,17 @@ export default function AddBlogPage() {
     try {
       // 👉 Subir imagen al bucket correcto
       if (image) {
-        const imageRef = ref(
-          storage,
-          `blogImages/${Date.now()}-${image.name}`
-        );
+        // const imageRef = ref(
+        //   storage,
+        //   `blogImages/${Date.now()}-${image.name}`
+        // );
 
+        // await uploadBytes(imageRef, image);
+        // imageUrl = await getDownloadURL(imageRef);
+        const imageRef = ref(storage, `blogImages/${Date.now()}-${image.name}`);
         await uploadBytes(imageRef, image);
         imageUrl = await getDownloadURL(imageRef);
       }
-
       // 👉 Guardar en Firestore
       await addDoc(collection(db, "posts"), {
         title,

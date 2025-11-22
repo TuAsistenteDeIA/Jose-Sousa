@@ -40,10 +40,11 @@ export default function AddBlogPage() {
 
       alert("Post publicado 🎉");
       navigate("/admin/dashboard");
-    } catch (error) {
-      console.error(error);
-      alert("Error al subir el post");
+    } catch (error: any) {
+      console.error("🔥 ERROR SUBIENDO POST:", error);
+      alert("Error al subir el post: " + (error.message || error));
     }
+    
 
     setLoading(false);
   };

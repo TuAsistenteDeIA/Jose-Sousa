@@ -276,7 +276,7 @@ const GestionProcesalPage = () => {
                 
                 <div className="flex justify-between items-center py-3 border-b border-amber-200">
                   <span className="font-medium text-gray-700">Tipo de examen</span>
-                  <span className="font-bold text-amber-600">Test + Práctico + Oral</span>
+                  <span className="font-bold text-amber-600">Test + Práctico</span>
                 </div>
                 
                 <div className="flex justify-between items-center py-3 border-b border-amber-200">
